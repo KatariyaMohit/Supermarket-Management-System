@@ -1,0 +1,775 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(160deg, #fffdf8, #073ae2);
+    color: #333;
+}
+
+h1, h3 {
+    margin: 0;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+input, select {
+    padding: 10px;
+    font-size: 16px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 300px;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+/* Header Styles */
+header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(140deg,  #007BFF, #010100); /* Black to Gold Gradient */
+    color: white;
+    height: auto; /* Half the screen size */
+    padding: 40px;
+    border-radius: 20px;
+}
+
+header h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+    color: rgba(231, 189, 73, 0.797);
+    text-align: center;
+}
+
+header h3 {
+    font-size: 1.5em;
+    text-align: center;
+}
+
+/* Logo Styles */
+.logo img {
+    width: 500px; /* Large logo size */
+    margin-bottom: 20px;
+}
+
+/* Customer and Product Section */
+#customer-name, #product-name {
+    width: 80%; /* Make input boxes smaller */
+    max-width: 350px; /* Limit to a reasonable size */
+    margin-bottom: 10px;
+}
+
+#customer-suggestions, #product-suggestions {
+    width: 80%;
+    max-width: 350px;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f1f1f100;
+}
+
+.suggestion {
+    padding: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+.suggestion:hover {
+    background-color: #cfcfcf;
+}
+
+#new-customer-form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    width: 70%; /* Limit the form width */
+    max-width: 500px;
+    display: none;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+}
+
+td {
+    background-color: #f9f9f9;
+}
+
+tr:nth-child(even) td {
+    background-color: #f1f1f1;
+}
+
+#product-table tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+/* Billing Section */
+#total-bill {
+    font-size: 1.8em;
+    color: #388e3c;
+    font-weight: bold;
+}
+
+#generateBillBtn, #sendToCustomer, #clearCart, #donePayment {
+    width: 200px;
+    margin: 10px;
+}
+
+#generateBillBtn {
+    background-color: #1a73e8;
+}
+
+#generateBillBtn:hover {
+    background-color: #0c59b2;
+}
+
+#receipt-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    margin: 5% auto;
+    width: 70%;
+    max-width: 800px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.print-download-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.print-download-buttons button {
+    background-color: #f44336;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.print-download-buttons button:hover {
+    background-color: #d32f2f;
+}
+
+#receipt-customer-name, #receipt-customer-type, #receipt-time, #receipt-total-bill {
+    font-weight: bold;
+}
+
+#receipt-customer-type-discount, #receipt-customer-type-discount span {
+    color: #388e3c;
+}
+
+#receipt-table td, #receipt-table th {
+    padding: 10px;
+}
+
+#receipt-table th {
+    background-color: #388e3c;
+    color: white;
+}
+
+/* Suggestion Box Styling */
+#customer-suggestions, #product-suggestions {
+    width: 80%; 
+    margin-top: 10px;
+    max-width: 350px;
+    background-color: #f1f1f100;
+    border-radius: 8px;
+}
+
+/* Printing Styles */
+@media print {
+    .no-print {
+        display: none;
+    }
+
+    body {
+        font-size: 12px;
+        color: #333;
+    }
+
+    .print-download-buttons {
+        display: none;
+    }
+
+    #receipt-modal .modal-content {
+        width: 100%;
+        padding: 10px;
+    }
+
+    #receipt-table th, #receipt-table td {
+        padding: 8px;
+    }
+
+    .logo img {
+        width: 150px; /* Smaller logo for print */
+    }
+
+    h1, h3 {
+        font-size: 1.5em;
+    }
+}
+
+.header-photo {
+    position: absolute;
+    top: 30px; /* Adjust to your header padding */
+    right: 30px; /* Adjust as needed for the margin */
+    max-width: 150px; /* Adjust the size of the image */
+    max-height: 150px;
+}
+
+.header-photo img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px; /* Optional: for rounded corners */
+}
+
+
+.time{
+    font-size: 30px;
+    color: rgba(231, 189, 73, 0.797);
+}
+
+/* Customer Section Styling */
+.customer-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 900px; /* Adjusted max-width to ensure content fits well */
+    margin: 30px auto; /* Centers the section horizontally */
+    font-family: 'Arial', sans-serif;
+    box-sizing: border-box; /* Ensures padding and border are included in width */
+}
+
+.customer-form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    transition: border 0.3s, box-shadow 0.3s;
+    box-sizing: border-box; /* Ensures padding is included in width calculation */
+}
+
+.form-input:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+.suggestions-container {
+    margin-top: 10px;
+    background-color: #f9f9f900;
+    border: 1px none #dddddd00;
+    max-height: 200px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.suggestion {
+    padding: 10px;
+    border-bottom: 1px none #dddddd00;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.suggestion:hover {
+    background-color: #f1f1f1;
+}
+
+.new-customer-btn {
+    padding: 12px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block;
+    margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.new-customer-btn:hover {
+    background-color: #45a049;
+}
+
+.new-customer-btn:focus {
+    outline: none;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 600px) {
+    .customer-section {
+        padding: 15px;
+        margin: 15px; /* Adjust margin for mobile devices */
+    }
+
+    .form-input {
+        font-size: 0.9em;
+    }
+
+    .new-customer-btn {
+        font-size: 1.1em;
+    }
+}
+
+
+
+/* Form Container */
+.form-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Form Header */
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Flex Container */
+.flex-container {
+    display: flex;
+    justify-content: space-between; /* Space between items */
+}
+
+/* Flex Item */
+.flex-item {
+    flex: 0 48%; /* Adjust to allow for spacing */
+}
+
+/* Labels */
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+/* Input Fields */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+/* Input Focus */
+input:focus,
+select:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+/* Submit Button */
+.submit-btn {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Flash Messages */
+.flash-container {
+    margin-top: 20px;
+}
+
+.flash-messages {
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.flash-message {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.flash -message.success {
+    background-color: #28a745;
+}
+
+.flash-message.error {
+    background-color: #dc3545;
+}
+
+.flash-message.info {
+    background-color: #17a2b8;
+}
+
+.flash-message.warning {
+    background-color: #ffc107;
+}
+
+
+/* Product Section Styles */
+.product-section {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 600px;
+    margin: 20px auto; /* Center the product section */
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Flex Container */
+.flex-container {
+    display: flex;
+    justify-content: space-between; /* Space between items */
+}
+
+/* Flex Item */
+.flex-item {
+    flex: 0 48%; /* Adjust to allow for spacing */
+}
+
+/* Labels */
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+/* Input Fields */
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+/* Input Focus */
+input:focus,
+select:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+/* Button */
+#add-product-btn {
+    background: linear-gradient(140deg,  #007BFF,#010100 );
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+#add-product-btn:hover {
+    background: linear-gradient(140deg,  #010100,#007BFF );
+}
+
+/* Suggestions Container */
+#product-suggestions {
+    background-color: #f9f9f904;
+    border: 1px none #ccc;
+    border-radius: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+    margin-top: 5px;
+}
+
+
+/* Customer Section Styles */
+.customer-section {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 600px;
+    margin: 20px auto; /* Center the customer section */
+}
+
+/* Customer Form Group */
+.customer-form-group {
+    margin-bottom: 15px;
+}
+
+/* Flex Container */
+.flex-container {
+    display: flex;
+    justify-content: space-between; /* Space between items */
+}
+
+/* Flex Item */
+.flex-item {
+    flex: 0 48%; /* Adjust to allow for spacing */
+}
+
+/* Labels */
+.form-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+/* Input Fields */
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+/* Input Focus */
+.form-input:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+/* New Customer Button */
+.new-customer-btn {
+    background: linear-gradient(140deg,  #007BFF,#010100 );
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.new-customer-btn:hover {
+    background: linear-gradient(140deg,  #010100,#007BFF );
+}
+
+/* Suggestions Container */
+.suggestions-container {
+    background-color: #f9f9f900;
+    border: 1px none #ccc;
+    border-radius: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+    margin-top: 5px;
+}
+
+/* Combined Section Styles */
+.combined-section {
+    display: flex;
+    justify-content: space-between; /* Space between sections */
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 1200px; /* Adjust as necessary */
+    margin: 20px auto; /* Center the combined section */
+}
+
+/* Customer Section Styles */
+.customer-section {
+    flex: 0 48%; /* Adjust width as needed */
+}
+
+/* Product Section Styles */
+.product-section {
+    flex: 0 48%; /* Adjust width as needed */
+}
+
+/* Common Form Group */
+.customer-form-group,
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Flex Container */
+.flex-container {
+    display: flex;
+    justify-content: space-between; /* Space between items */
+}
+
+/* Flex Item */
+.flex-item {
+    flex: 0 48%; /* Adjust to allow for spacing */
+}
+
+/*
+
+/* Product Table Container */
+.product-table-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 1200px; /* Adjust as necessary */
+    margin: 20px auto; /* Center the product table */
+}
+
+/* Table Styles */
+#product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px; /* Space between table and billing section */
+}
+
+#product-table th,
+#product-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+#product-table th {
+    background-color: #007BFF;
+    font-weight: bold;
+}
+
+/* Billing Section */
+.billing-section {
+    margin-top: 20px; /* Space above billing section */
+}
+
+.billing-section h3 {
+    margin: 0;
+    font-weight: bold;
+    color: #333;
+}
+
+.billing-section h4 {
+    margin: 10px 0;
+    color: #777;
+}
+
+/* Billing Buttons */
+.billing-buttons {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+    margin-top: 10px; /* Space above buttons */
+}
+
+.billing-buttons button {
+    background: linear-gradient(140deg,  #010100,#007BFF );
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.billing-buttons button:hover {
+    background: linear-gradient(140deg,  #007BFF, #010100);
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

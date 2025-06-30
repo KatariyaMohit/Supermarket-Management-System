@@ -1,0 +1,109 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f8fb; /* Light blue-gray background */
+    margin-top: 100px;
+    padding: 0;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.back-link {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.back-link img {
+    width: 40px;
+    height: 40px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #007bff;
+    height: 70px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    color: white;
+    transition: background-color 0.3s ease;
+    padding: 0 20px;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.header h1 {
+    color: white;
+    font-weight: bold;
+    margin-left: 600px;
+    font-size: 30px;
+}
+
+.container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 90px auto 20px; /* Margin adjusted for header */
+    width: 80%; /* Responsive width */
+}
+
+.offer-edit {
+    margin-bottom: 20px;
+}
+
+.offer-edit h3 {
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="date"],
+select {
+    width: 100%; /* Full width */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    box-sizing: border-box; /* Ensure padding does not affect width */
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus {
+    border-color: #1976d2;
+    outline: none; /* Remove default outline */
+}
+
+button {
+    background-color: #1976d2;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #145a86;
+}
+
+hr {
+    margin: 20px 0;
+}
