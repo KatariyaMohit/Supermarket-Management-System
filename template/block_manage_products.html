@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Block Products</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='block_products.css') }}">
+</head>
+<body>
+    <div>
+        <div class="header">
+            <h1>Manage Block Products</h1>
+            <div class="search-container">
+                <input type="text" id="productSearch" placeholder="Search Products..." onkeyup="filterProducts()">
+            </div>
+            <a href="#" onclick="goBack()" class="back-link">
+                <img src="{{ url_for('static', filename='back-icon.png') }}" alt="Back">
+            </a>
+        </div>
+
+
+        <h2>Welcome to {{ block_name }}!</h2>
+    </div>
+
+    
+    <!-- Wrap the table in a form -->
+    <form method="POST" action="/edit_block_products">
+        <h2>Product List</h2>
+        <table class="product-table" id="productTable">
+            <thead>
+                <tr>
+                    <th>Select</th> <!-- Column for checkboxes -->
+                    <th>Product ID</th>
+                    <th>Product Type</th>
+                    <th>Brand</th>
+                    <th>Cost Price</th>
+                    <th>Weight</th>
+                    <th>Selling Price</th>
+                    <th>Category ID</th>
+                    <th>Offer ID</th>
+                    <th>Block Count</th>
+                    <th>Warehouse Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td><input type="checkbox" name="product_ids" value="{{ product['product_id'] }}"></td>
+                    <td>{{ product['product_id'] }}</td>
+                    <td>{{ product['product_type'] }}</td>
+                    <td>{{ product['brand'] }}</td>
+                    <td>{{ product['cost_price'] }}</td>
+                    <td>{{ product['weight'] }}</td>
+                    <td>{{ product['selling_price'] }}</td>
+                    <td>{{ product['category_id'] }}</td>
+                    <td>{{ product['offer_id'] }}</td>
+                    <td>{{ product['block_count'] }}</td>
+                    <td>{{ product['warehouse_count'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" style="margin-top: 20px; background-color: #1976d2; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; text-transform: uppercase;">Edit Selected Products</button>
+    </form>
+
+    <script>
+
+   // Store the original referrer only if it's not already stored and not from z.html
+   if (!sessionStorage.getItem('originalReferrer') && document.referrer && !document.referrer.includes('z.html')) {
+        sessionStorage.setItem('originalReferrer', document.referrer);
+    }
+
+    function goBack() {
+        const originalReferrer = sessionStorage.getItem('originalReferrer');
+        if (originalReferrer) {
+            window.location.href = originalReferrer; // Go back to the stored original referrer
+        } else {
+            window.history.back(); // Fallback if no referrer is stored
+        }
+    }
+        function filterProducts() {
+            const input = document.getElementById('productSearch');
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById('productTable');
+            const trs = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < trs.length; i++) {
+                const tds = trs[i].getElementsByTagName('td');
+                let match = false;
+
+                for (let j = 0; j < tds.length; j++) {
+                    if (tds[j].innerHTML.toLowerCase().indexOf(filter) > -1) {
+                        match = true;
+                        break;
+                    }
+                }
+
+                trs[i].style.display = match ? '' : 'none';
+            }
+        }
+    </script>
+</body>
+</html>

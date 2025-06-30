@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashier Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='cashier.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .suggestion {
+            padding: 8px;
+            background-color: #f1f1f1;
+            margin: 2px;
+            cursor: pointer;
+        }
+
+        .suggestion:hover {
+            background-color: #ddd;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        #new-customer-form {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        #new-customer-form h3 {
+            margin-top: 0;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+
+        #total-bill {
+            font-size: 1.5em;
+            color: green;
+            font-weight: bold;
+        }
+        
+        .print-download-buttons {
+            margin-top: 20px;
+        }
+
+        .print-download-buttons button {
+            padding: 10px;
+            margin-right: 10px;
+        }
+
+        #customer-suggestions .suggestion {
+            padding: 8px;
+            background-color: #f1f1f1;
+            cursor: pointer;
+            margin-bottom: 2px;
+        }
+
+        #customer-suggestions .suggestion:hover {
+            background-color: #ddd;
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <header>
+        <div class="time">
+            <strong>Current Time:</strong>
+            <span id="currentTime"></span>
+        </div>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='Logo.png') }}">    
+        </div>
+        <div>
+            <h1>Cashier Dashboard</h1>
+            <h3>Manage Sales Efficiently</h3>
+        </div>
+    </header>
+
+
+    <div class="combined-section">
+    <div class="customer-section">
+        <div class="customer-form-group">
+            <div class="flex-container">
+                <div class="flex-item">
+                    <label for="customer-name" class="form-label">Customer Name:</label>
+                    <input type="text" id="customer-name" class="form-input" oninput="fetchCustomerSuggestions()" placeholder="Enter Customer Name">
+                    <div id="customer-suggestions" class="suggestions-container"></div>
+                </div>
+                <div class="flex-item">
+                    <label for="customer-type" class="form-label">Customer Type:</label>
+                    <input type="text" id="customer-type" class="form-input" placeholder="Customer Type" disabled>
+                </div>
+            </div>
+        </div>
+    
+        <input type="hidden" id="membership-from" value="">
+        <input type="hidden" id="membership-to" value="">
+    
+        <button id="new-customer-btn" class="new-customer-btn" style="display:none" onclick="showNewCustomerForm()">New Customer</button>
+    </div>
+
+
+
+    <div class="product-section">
+        <div class="form-group">
+            <div class="flex-container">
+                <div class="flex-item">
+                    <label for="product-name">Product Name:</label>
+                    <input type="text" id="product-name" oninput="fetchProductSuggestions()" placeholder="Enter Product Name">
+                    <div id="product-suggestions"></div>
+                </div>
+                <div class="flex-item">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" value="1" min="1" onchange="updatePrice()">
+                </div>
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <div class="flex-container">
+                <div class="flex-item">
+                    <label for="measurement">Measurement:</label>
+                    <select id="measurement" class="form-control">
+                        <option value="">none</option>
+                        <option value="kg">Kilogram</option>
+                        <option value="g">Gram</option>
+                        <option value="dozen">Dozen</option>
+                        <option value="lt">Liter</option>
+                        <option value="ml">Milliliter</option>
+                        <option value="units">Units</option>
+                        <option value="unit">Unit</option>
+                        <option value="packets">Packets</option>
+                        <option value="pouches">Pouches</option>
+                        <option value="bundles">Bundles</option>
+                    </select>
+                </div>
+                <div class="flex-item">
+                    <label for="price">Price:</label>
+                    <input type="text" id="price" readonly>
+                </div>
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <div class="flex-container">
+                <div class="flex-item">
+                    <label for="paymentMode">Select Payment Mode:</label>
+                    <select id="paymentMode" class="form-control">
+                        <!-- Options will be dynamically populated from backend -->
+                    </select>
+                </div>
+            </div>
+        </div>
+    
+        <button id="add-product-btn" onclick="addProductToTable()">Add Product</button>
+    </div>
+    
+    </div>
+
+    </div>
+
+    <div class="header-photo">
+        <img src="{{ url_for('static', filename='QR.jpg') }}">
+    </div>
+    
+
+    <div id="new-customer-form" class="form-container">
+        <h2>Add New Customer</h2>
+        <form action="/add_customer2" method="POST" class="customer-form">
+            <div class="form-group">
+                <div class="flex-container">
+                    <div class="flex-item">
+                        <label for="customer_name">Customer Name:</label>
+                        <input type="text" name="customer_name" required placeholder="Enter customer name">
+                    </div>
+                    <div class="flex-item">
+                        <label for="customer_contact">Customer Contact:</label>
+                        <input type="number" name="customer_contact" required placeholder="Enter contact number">
+                    </div>
+                </div>
+            </div>
+    
+            <div class="form-group">
+                <div class="flex-container">
+                    <div class="flex-item">
+                        <label for="date_of_birth">Date of Birth:</label>
+                        <input type="date" name="date_of_birth" required>
+                    </div>
+                 <div class="flex-item">
+        <label for="email">Email:</label>
+        <input type="email" name="email" required placeholder="Enter email address">
+    </div>
+</div>
+</div>
+
+<div class="form-group">
+<div class="flex-container">
+    <div class="flex-item">
+        <label for="address">Address:</label>
+        <input type="text" name="address" required placeholder="Enter address">
+    </div>
+    <div class="flex-item">
+        <label for="gender">Gender:</label>
+        <select name="gender" required>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+        </select>
+    </div>
+</div>
+</div>
+
+<div class="form-group">
+<div class="flex-container">
+    <div class="flex-item">
+        <label for="customer_type_id">Customer Type ID:</label>
+        <input type="text" name="customer_type_id" placeholder="Optional: Enter Customer Type ID">
+    </div>
+    <div class="flex-item">
+        <label for="membership_to_from">Membership From:</label>
+        <input type="date" name="membership_to_from" required>
+    </div>
+</div>
+</div>
+
+<div class="form-group">
+<div class="flex-container">
+    <div class="flex-item">
+        <label for="membership_to">Membership To:</label>
+        <input type="date" name="membership_to" required>
+    </div>
+</div>
+</div>
+
+<button type="submit" class="submit-btn">Add Customer</button>
+</form>
+</div>
+
+<!-- Flash Messages Section -->
+<div class="flash-container">
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="flash-messages">
+{% for category, message in messages %}
+<div class="flash-message {{ category }}">
+{{ message }}
+</div>
+{% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+</div>
+
+   <!-- Product Section -->
+
+
+<!-- Product Table -->
+<div class="product-table-container">
+    <table id="product-table">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Offer ID</th>
+                <th>Offer Details</th>
+                <th>Discount</th>
+                <th>Total</th>
+                <th>Action</th>
+                <th>Save</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be dynamically populated -->
+        </tbody>
+    </table>
+
+    <div class="billing-section">
+        <h3>Total Bill: ₹<span id="total-bill">0.00</span></h3>
+        <h4 id="customer-type-discount" style="display:none;"></h4>
+        <div class="billing-buttons">
+            <button id="generateBillBtn" onclick="generateBill()">Generate Bill</button>
+        
+                <form action="/send_bill" method="POST" id="send-bill-form">
+        <input type="hidden" id="customer_name" name="customer_name">
+        <input type="hidden" id="customer_email" name="customer_email">
+      
+        <input type="hidden" id="bill_details" name="bill_details">
+        
+        <button type="button" onclick="sendBill()">Send to Customer</button>
+      </form>
+      
+            <button onclick="clearCart()">Clear Cart</button>
+            <button onclick="donePayment()">Done Payment</button> <!-- New button added -->
+        </div>
+    </div>
+</div>
+    <!-- Modal for Receipt -->
+    <div id="receipt-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeReceiptModal()">&times;</span>
+            <h2>Receipt</h2>
+            <div id="receipt-details">
+                <p><strong>Customer Name:</strong> <span id="receipt-customer-name"></span></p>
+                <p><strong>Customer Type:</strong> <span id="receipt-customer-type"></span></p>
+                <p><strong>Time:</strong> <span id="receipt-time"></span></p>
+                <table id="receipt-table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Offer ID</th>
+                            <th>Offer Details</th>
+                            <th>Discount</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <h3>Total Bill: ₹<span id="receipt-total-bill"></span></h3>
+                <h4 id="receipt-customer-type-discount" style="display:none;"></h4>
+                <div class="print-download-buttons">
+                    <button class="no-print" onclick="printReceipt()">Print</button>
+                    <button class="no-print" onclick="downloadReceipt()">Download PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='cashier.js') }}"></script>
+
+
+
+      <script>
+        function sendBill() {
+            var customerName = document.getElementById("customer-name").value;
+
+            document.getElementById("customer_name").value = customerName;
+
+            fetch(`/get_customer_email?name=${customerName}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.email) {
+                // Set the customer's email in the hidden input
+                document.getElementById("customer_email").value = data.email;
+
+                // // Get the content of the receipt modal (entire HTML)
+                // var receiptModal = document.getElementById("receipt-modal");
+                // if (!receiptModal) {
+                //     console.error("Error: receipt-modal element not found!");
+                //     return;
+                // }
+                // var clonedReceipt = receiptModal.cloneNode(true);
+                // var noPrintElements = clonedReceipt.getElementsByClassName("no-print");
+                // while (noPrintElements.length > 0) {
+                //     noPrintElements[0].parentNode.removeChild(noPrintElements[0]);
+                // }
+                // var receiptContent = clonedReceipt.innerHTML;
+               
+                // document.getElementById("bill_details").value = receiptContent;
+                
+
+                // Gather the bill HTML content manually
+                var receiptHtml = `
+                    <p><strong>Customer Name:</strong> ${document.getElementById("receipt-customer-name").innerText}</p>
+                    <p><strong>Customer Type:</strong> ${document.getElementById("receipt-customer-type").innerText}</p>
+                    <p><strong>Time:</strong> ${document.getElementById("receipt-time").innerText}</p>
+                    <table border="1" cellpadding="5" cellspacing="0">${document.getElementById("receipt-table").innerHTML}</table>
+                    <h3>Total Bill: ₹${document.getElementById("receipt-total-bill").innerText}</h3>
+                `;
+
+                document.getElementById("bill_details").value = receiptHtml;
+
+
+                // Submit the form
+                var form = document.getElementById("send-bill-form");
+                if (form) {
+                    form.submit();
+                } else {
+                    console.error("Error: send-bill-form element not found!");
+                }
+            } else {
+                alert("Customer email not found!");
+            }
+        })
+        .catch(error => console.error("Error fetching customer email:", error));
+}
+    </script>
+</body>
+</html>

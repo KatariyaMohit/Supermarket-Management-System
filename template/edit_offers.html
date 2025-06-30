@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Offers</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='edit_offers.css') }}">
+</head>
+<body>
+
+    <div class="header">
+        <a href="/offer_details" class="back-link">
+            <img src="{{ url_for('static', filename='back-icon.png') }}" alt="Go Back">
+        </a>    
+        <h1>Edit Offers</h1>
+    </div>
+
+    <div class="container">
+        <form action="/update_offers" method="POST">
+            {% for offer in offers %}
+            <div class="offer-edit">
+                <h3>Offer ID: {{ offer[0] }}</h3>
+
+                <label>Offer Type:</label>
+                <input type="text" name="type-{{ offer[0] }}" value="{{ offer[1] }}" required>
+
+                <label>Offer Details:</label>
+                <input type="text" name="details-{{ offer[0] }}" value="{{ offer[2] }}" required>
+
+                <label>Offer Start Date:</label>
+                <input type="date" name="start_date-{{ offer[0] }}" value="{{ offer[3] }}" required>
+
+                <label>Offer End Date:</label>
+                <input type="date" name="end_date-{{ offer[0] }}" value="{{ offer[4] }}" required>
+            </div>
+            <hr>
+            {% endfor %}
+            <button type="submit" style="background-color: #1976d2; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; text-transform: uppercase;">Update Offers</button>
+        </form>
+    </div>
+
+</body>
+</html>

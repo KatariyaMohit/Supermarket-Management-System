@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Payment Modes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='edit_payment_modes.css') }}">
+</head>
+<body>
+
+    <div class="header">
+        <a href="/payment_modes" class="back-link">
+            <img src="{{ url_for('static', filename='back-icon.png') }}" alt="Go Back">
+        </a>
+        <h1>Edit Payment Modes</h1>
+    </div>
+
+    <div class="container">
+        <form action="/update_payment_modes" method="POST">
+            {% for payment_mode in payment_modes %}
+            <div class="payment-mode-edit">
+                <h3>Payment Mode ID: {{ payment_mode[0] }}</h3>
+
+                <label>Mode of Payment:</label>
+                <input type="text" name="mode-{{ payment_mode[0] }}" value="{{ payment_mode[1] }}" required>
+
+                <label>Offer ID:</label>
+                <input type="text" name="offer-{{ payment_mode[0] }}" value="{{ payment_mode[2] }}">
+
+            </div>
+            <hr>
+            {% endfor %}
+            <button type="submit" style="background-color: #1976d2; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; text-transform: uppercase;">Update Payment Modes</button>
+        </form>
+    </div>
+
+</body>
+</html>

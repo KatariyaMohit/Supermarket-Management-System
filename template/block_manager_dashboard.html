@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block Manager Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='block_dashboard.css') }}">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <img id="logo" src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
+            <h1>Supermarket Block Manager Dashboard</h1>
+            <nav>
+                <a href="/logout" class="logout-button">Logout</a>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <!-- <h2>Welcome, Block Manager!</h2> -->
+        <h2>Welcome to {{ block_name }}!</h2>
+        <ul class="dashboard-links">
+            <li><a href="/block_manage_products">Manage Block Products</a></li>
+            <li><a href="/products">View Products</a></li>
+        </ul>
+    </main>
+</body>
+</html>

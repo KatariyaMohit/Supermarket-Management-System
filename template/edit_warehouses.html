@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Warehouses</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='edit_warehouses.css') }}">
+</head>
+<body>
+
+    <div class="header">
+        <a href="/warehouse" class="back-link">
+            <img src="{{ url_for('static', filename='back-icon.png') }}" alt="Go Back">
+        </a>
+        <h1>Edit Warehouses</h1>
+    </div>
+
+    <div class="container">
+        <form action="/update_warehouses" method="POST">
+            {% for warehouse in warehouses %}
+            <div class="warehouse-edit">
+                <h3>Warehouse No: {{ warehouse[0] }}</h3>
+
+                <label>Warehouse Name:</label>
+                <input type="text" name="name-{{ warehouse[0] }}" value="{{ warehouse[1] }}" required>
+
+            </div>
+            <hr>
+            {% endfor %}
+            <button type="submit" style="background-color: #1976d2; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; text-transform: uppercase;">Update Warehouses</button>
+        </form>
+    </div>
+
+</body>
+</html>
