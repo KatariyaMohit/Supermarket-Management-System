@@ -3,6 +3,16 @@ The Supermarket Management System is a role-based web application designed to ma
 
 A full-featured web-based supermarket management system built with Flask, MySQL, and HTML/CSS/JavaScript. This system is designed to handle everything from employee and product management to real-time billing, stock tracking, warehouse transfers, and email invoicing.
 
+## Team Members
+
+| Name                | Roll Number  |
+|---------------------|--------------|
+| M.Rajavardhan       | 230001053    |
+| Mohit Katariya      | 230001055    |
+| M.Rishik Preetham   | 230001048    |
+| Kalyani Buradkar    | 230001017    |
+---
+
 ## Features :-
 ### Role-Based Login System 
 Admin – Full access to all modules (CRUD on all tables).
