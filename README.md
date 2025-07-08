@@ -71,8 +71,8 @@ app.config['MAIL_PASSWORD'] = 'your_app_password'
 
 ## Install Dependencies
 pip install flask flask-mysqldb flask-mail
-Run the Application
-python app.py
+Run the Application 
+python app.py 
 
 Access at: http://127.0.0.1:5000 
 
