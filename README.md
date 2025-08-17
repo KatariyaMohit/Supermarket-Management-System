@@ -1,4 +1,4 @@
-# Supermarket-Management-System
+<img width="1897" height="913" alt="Screenshot 2025-08-17 202253" src="https://github.com/user-attachments/assets/e9971337-2407-4f7f-beb8-fe7551412399" /># Supermarket-Management-System
 The Supermarket Management System is a role-based web application designed to manage day-to-day supermarket operations including billing, inventory, employee management, and warehouse logistics. It ensures smooth coordination between admin, cashier, warehouse manager, and block in-charges through an integrated MySQL database and Flask backend.
 
 A full-featured web-based supermarket management system built with Flask, MySQL, and HTML/CSS/JavaScript. This system is designed to handle everything from employee and product management to real-time billing, stock tracking, warehouse transfers, and email invoicing.
@@ -26,8 +26,12 @@ Real-time product availability tracking.
 Offer/discount integration into bill generation.
 Email functionality to send invoices directly to customers.
 
+
+<img width="1897" height="913" alt="Screenshot 2025-08-17 202253" src="https://github.com/user-attachments/assets/1357b440-5a89-45ec-b8f7-6a6c9c2a4b7f" />
+
 ## Database Tables (supermarket_db)
-employee, customer, customertype, product, category, warehouse, block, producttransferhisto, offerdetails, buys, buys_products, invoicedetails, feedback, complaints, returnslip, paymentmode
+employee, customer, customertype, product, category, warehouse, block, producttransferhisto, offerdetails, buys, buys_products, invoicedetails, feedback, complaints, returnslip, 
+aymentmode
 
 ## Tech Stack
 Backend: Python (Flask)
