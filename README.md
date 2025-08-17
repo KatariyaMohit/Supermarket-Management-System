@@ -27,7 +27,6 @@ Offer/discount integration into bill generation.
 Email functionality to send invoices directly to customers.
 
 
-<img width="1897" height="913" alt="Screenshot 2025-08-17 202253" src="https://github.com/user-attachments/assets/1357b440-5a89-45ec-b8f7-6a6c9c2a4b7f" />
 
 ## Database Tables (supermarket_db)
 employee, customer, customertype, product, category, warehouse, block, producttransferhisto, offerdetails, buys, buys_products, invoicedetails, feedback, complaints, returnslip, 
