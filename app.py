@@ -13,8 +13,8 @@ app.secret_key = 'your secret key'
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="your password",
-    database="database name"
+    password="your database password",
+    database="supermarket_db"
 )
 
 # Configure the connection pool
@@ -23,8 +23,8 @@ connection_pool = pooling.MySQLConnectionPool(
     pool_size=5,  # Adjust the pool size as needed
     host="localhost",
     user="root",
-    password="your password",
-    database="database name"
+    password="your database password",
+    database="supermarket_db"
 )
 
 # Get connection from pool
@@ -735,16 +735,20 @@ def update_invoices():
     db.commit()
     return redirect(url_for('manage_invoice'))
 
-# Display all products
+
 @app.route('/products')
 def manage_product():
+    source = request.args.get('source')   # 'Admin' or 'Warehouse Manager'
+
     cursor.execute("SELECT * FROM Product")
     products = cursor.fetchall()
-    return render_template('products.html', products=products)
+
+    return render_template('products.html', products=products, source=source)
 
 # Add new product
 @app.route('/add_product', methods=['POST'])
 def add_product():
+    source = request.form.get('source')  # ✅ get role info from form
     # Get form data
     product_id = request.form['product_id']
     product_type = request.form['product_type']
@@ -767,21 +771,23 @@ def add_product():
     cursor.execute(query, values)
     db.commit()
 
-    return redirect(url_for('manage_product'))
+    return redirect(url_for('manage_product',source = source))
 
 # Delete products
 @app.route('/delete_products', methods=['POST'])
 def delete_products():
+    source = request.form.get('source')  # ✅ get role info from form
     product_ids = request.form.getlist('product_ids')
     if product_ids:
         query = "DELETE FROM Product WHERE product_id IN (%s)" % ','.join(['%s'] * len(product_ids))
         cursor.execute(query, tuple(product_ids))
         db.commit()
-    return redirect(url_for('manage_product'))
+    return redirect(url_for('manage_product',source=source))
 
 
 @app.route('/edit_products', methods=['POST'])
 def edit_products():
+    source = request.form.get('source')  # ✅ get role info from form
     product_ids = request.form.getlist('product_ids')
     products_to_edit = []
     
@@ -799,33 +805,43 @@ def edit_products():
     cursor.execute("SELECT * FROM OfferDetails")
     offers = cursor.fetchall()
     
-    return render_template('edit_products.html', products=products_to_edit, categories=categories, offers=offers)
+    return render_template('edit_products.html', products=products_to_edit, categories=categories, offers=offers,source=source)
 
-# Update products
+
+
 @app.route('/update_products', methods=['POST'])
 def update_products():
+    source = request.form.get('source')  # ✅ role info
+
     for key, value in request.form.items():
-        product_id = key.split('-')[1]
-        if key.startswith('type-'):
+        # Skip fields that don’t contain a dash
+        if '-' not in key:
+            continue  
+
+        field, product_id = key.split('-', 1)  # split only once
+
+        if field == 'type':
             cursor.execute("UPDATE Product SET product_type = %s WHERE product_id = %s", (value, product_id))
-        elif key.startswith('brand-'):
+        elif field == 'brand':
             cursor.execute("UPDATE Product SET brand = %s WHERE product_id = %s", (value, product_id))
-        elif key.startswith('cost_price-'):
+        elif field == 'cost_price':
             cursor.execute("UPDATE Product SET cost_price = %s WHERE product_id = %s", (value, product_id))
-        elif key.startswith('weight-'):
+        elif field == 'weight':
             cursor.execute("UPDATE Product SET weight = %s WHERE product_id = %s", (value, product_id))
-        elif key.startswith('selling_price-'):
+        elif field == 'selling_price':
             cursor.execute("UPDATE Product SET selling_price = %s WHERE product_id = %s", (value, product_id))
-        elif key.startswith('category_id-'):
+        elif field == 'category_id':
             cursor.execute("UPDATE Product SET category_id = %s WHERE product_id = %s", (value, product_id))
-        elif key.startswith('offer_id-'):
+        elif field == 'offer_id':
             cursor.execute("UPDATE Product SET offer_id = %s WHERE product_id = %s", (value, product_id))
-        elif key.startswith('block_count-'):
+        elif field == 'block_count':
             cursor.execute("UPDATE Product SET block_count = %s WHERE product_id = %s", (value, product_id))
-        elif key.startswith('warehouse_count-'):
+        elif field == 'warehouse_count':
             cursor.execute("UPDATE Product SET warehouse_count = %s WHERE product_id = %s", (value, product_id))
+
     db.commit()
-    return redirect(url_for('manage_product'))
+    return redirect(url_for('manage_product', source=source))
+
 
 # Display all purchases (Buys)
 @app.route('/buys')
@@ -1197,8 +1213,7 @@ def suggest_products():
     # Fetch products with their IDs, names, and selling prices based on partial match in product name
     cursor.execute("""
         SELECT p.product_id, p.product_type AS name, p.selling_price, p.offer_id, 
-            o.offers_details, 
-            p.discount
+            o.offers_details,p.discount
         FROM Product p
         LEFT JOIN OfferDetails o ON p.offer_id = o.offers_id
         WHERE p.product_type LIKE %s
@@ -1209,8 +1224,7 @@ def suggest_products():
 
 @app.route('/add_customer2', methods=['POST'])
 def add_customer2():
-    # Get form data
-    # customer_id = request.form['customer_id']
+   
     customer_name = request.form['customer_name']
     customer_contact = request.form['customer_contact']
     date_of_birth = request.form['date_of_birth']
@@ -1370,9 +1384,9 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = 'your email'
+app.config['MAIL_USERNAME'] = 'your mail'
 app.config['MAIL_PASSWORD'] = 'your app password'  # App password
-app.config['MAIL_DEFAULT_SENDER'] = 'your email'
+app.config['MAIL_DEFAULT_SENDER'] = 'your mail'
 
 mail = Mail(app)
 
@@ -1433,6 +1447,18 @@ def send_bill():
     except Exception as e:
         print(f"Exception occurred while sending email: {e}")
         return f"Error: {str(e)}", 500
+
+@app.route('/go_to_manage_products_from_admin')
+def go_to_manage_products_from_admin():
+    return redirect(url_for('manage_product', source='Admin'))
+
+@app.route('/go_to_manage_products_from_warehouse')
+def go_to_manage_products_from_warehouse():
+    return redirect(url_for('products', source='Warehouse Manager'))
+
+@app.route('/go_to_products_from_block')
+def go_to_products_from_block():
+    return redirect(url_for('manage_product', source='Block Manager'))
 
 
 
