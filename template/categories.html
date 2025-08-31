@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Categories</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='category.css') }}">
 </head>
+
 <body>
     <div>
         <div class="header">
@@ -13,7 +15,7 @@
             <div class="search-container">
                 <input type="text" id="categorySearch" placeholder="Search Categories..." onkeyup="filterCategories()">
             </div>
-            <a href="#" onclick="goBack()" class="back-link">
+            <a href="{{ url_for('admin_dashboard') }}" class="back-link">
                 <img src="{{ url_for('static', filename='back-icon.png') }}" alt="Back">
             </a>
         </div>
@@ -54,7 +56,8 @@
                 <tbody>
                     {% for category in categories %}
                     <tr>
-                        <td><input type="checkbox" name="category_ids" value="{{ category[0] }}"></td> <!-- Checkbox for each category -->
+                        <td><input type="checkbox" name="category_ids" value="{{ category[0] }}"></td>
+                        <!-- Checkbox for each category -->
                         <td>{{ category[0] }}</td>
                         <td>{{ category[1] }}</td>
                         <td>{{ category[2] }}</td>
@@ -63,26 +66,30 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <button type="submit" style="margin-top: 20px; background-color: #3786ee; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; text-transform: uppercase;">Delete Selected Categories</button>
-            <button type="submit" formaction="/edit_categories" style="margin-top: 20px; background-color: #1976d2; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; text-transform: uppercase;">Edit Selected Categories</button>
+            <button type="submit"
+                style="margin-top: 20px; background-color: #3786ee; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; text-transform: uppercase;">Delete
+                Selected Categories</button>
+            <button type="submit" formaction="/edit_categories"
+                style="margin-top: 20px; background-color: #1976d2; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; text-transform: uppercase;">Edit
+                Selected Categories</button>
         </form>
     </div>
 
     <script>
 
-   // Store the original referrer only if it's not already stored and not from z.html
-   if (!sessionStorage.getItem('originalReferrer') && document.referrer && !document.referrer.includes('z.html')) {
-        sessionStorage.setItem('originalReferrer', document.referrer);
-    }
-
-    function goBack() {
-        const originalReferrer = sessionStorage.getItem('originalReferrer');
-        if (originalReferrer) {
-            window.location.href = originalReferrer; // Go back to the stored original referrer
-        } else {
-            window.history.back(); // Fallback if no referrer is stored
+        // Store the original referrer only if it's not already stored and not from z.html
+        if (!sessionStorage.getItem('originalReferrer') && document.referrer && !document.referrer.includes('z.html')) {
+            sessionStorage.setItem('originalReferrer', document.referrer);
         }
-    }
+
+        function goBack() {
+            const originalReferrer = sessionStorage.getItem('originalReferrer');
+            if (originalReferrer) {
+                window.location.href = originalReferrer; // Go back to the stored original referrer
+            } else {
+                window.history.back(); // Fallback if no referrer is stored
+            }
+        }
         // JavaScript function to filter categories in the table
         function filterCategories() {
             const input = document.getElementById('categorySearch');
@@ -106,4 +113,5 @@
         }
     </script>
 </body>
+
 </html>
