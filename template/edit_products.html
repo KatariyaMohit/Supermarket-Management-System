@@ -138,7 +138,7 @@ hr {
                 <h3>Product ID: {{ product[0] }}</h3>
                 <label>Product Type:</label>
                 <input type="text" name="product_type-{{ product[0] }}" value="{{ product[1] }}" required>
-
+                  <input type="hidden" name="source" value="{{ source }}">
                 <label>Brand:</label>
                 <input type="text" name="brand-{{ product[0] }}" value="{{ product[2] }}" required>
 
@@ -151,24 +151,6 @@ hr {
                 <label>Selling Price:</label>
                 <input type="number" name="selling_price-{{ product[0] }}" value="{{ product[5] }}" step="0.01" required>
 
-                <!-- <label>Category:</label>
-                <select name="category_id-{{ product[0] }}" required>
-                    {% for category in categories %}
-                        <option value="{{ category.category_id }}" {% if product[6] == category.category_id %}selected{% endif %}>
-                            {{ category.category_name }}
-                        </option>
-                    {% endfor %}
-                </select>
-
-                <label>Offer:</label>
-                <select name="offer_id-{{ product[0] }}">
-                    <option value="" {% if not product[7] %}selected{% endif %}>None</option>
-                    {% for offer in offers %}
-                        <option value="{{ offer.offers_id }}" {% if product[7] == offer.offers_id %}selected{% endif %}>
-                            {{ offer.offer_name }}
-                        </option>
-                    {% endfor %}
-                </select> -->
 
                 <label>Category:</label>
 <select name="category_id-{{ product[0] }}" required>
@@ -191,6 +173,7 @@ hr {
 
                 <label>Block Count:</label>
                 <input type="number" name="block_count-{{ product[0] }}" value="{{ product[8] }}" required>
+               
 
                 <label>Warehouse Count:</label>
                 <input type="number" name="warehouse_count-{{ product[0] }}" value="{{ product[9] }}" required>
