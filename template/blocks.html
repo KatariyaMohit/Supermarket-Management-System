@@ -13,7 +13,7 @@
             <div class="search-container">
                 <input type="text" id="blockSearch" placeholder="Search Blocks..." onkeyup="filterBlocks()">
             </div>
-            <a href="#" onclick="goBack()" class="back-link">
+            <a href="{{ url_for('admin_dashboard') }}" class="back-link">
                 <img src="{{ url_for('static', filename='back-icon.png') }}" alt="Back">
             </a>
         </div>
