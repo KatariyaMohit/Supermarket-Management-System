@@ -5,15 +5,26 @@ body {
     height: 100vh;
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #4a90e2, #9013fe); /* Deep blue to purple gradient */
+    background: linear-gradient(135deg, #4a90e2, #9013fe);
     background-attachment: fixed;
     
     
 }
+.back-link {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    display: inline-block;
+    margin-right: 20px;
+}
+.back-link img {
+    width: 40px;
+    height: 40px;
+}
 
 h2{
     font-size: 2.5em;
-    color: #4a90e2; /* Highlighted blue to match the theme */
+    color: #4a90e2;
     text-align: center;
     margin-bottom: 20px;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
@@ -200,3 +211,4 @@ h2 {
         transform: translateY(0);
     }
 }
+
