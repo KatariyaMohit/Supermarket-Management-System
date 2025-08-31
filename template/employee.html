@@ -16,9 +16,10 @@
                 <input type="text" id="employeeSearch" placeholder="Search Employees..." onkeyup="filterEmployees()">
             </div>
 
-            <a href="#" onclick="goBack()" class="back-link">
+            <a href="{{ url_for('admin_dashboard') }}" class="back-link">
                 <img src="{{ url_for('static', filename='back-icon.png') }}" alt="Back">
             </a>
+
         </div>
     </div>
 
@@ -54,8 +55,8 @@
             <button type="submit">Add Employee</button>
         </form>
 
-</div>
-<div>
+    </div>
+    <div>
         <!-- Employee List Table -->
         <h2>Employee List</h2>
         <form action="/delete_employees" method="POST"> <!-- Form for deleting employees -->
@@ -98,19 +99,19 @@
     </div>
 
     <script>
-   // Store the original referrer only if it's not already stored and not from z.html
-   if (!sessionStorage.getItem('originalReferrer') && document.referrer && !document.referrer.includes('z.html')) {
-        sessionStorage.setItem('originalReferrer', document.referrer);
-    }
-
-    function goBack() {
-        const originalReferrer = sessionStorage.getItem('originalReferrer');
-        if (originalReferrer) {
-            window.location.href = originalReferrer; // Go back to the stored original referrer
-        } else {
-            window.history.back(); // Fallback if no referrer is stored
+        // Store the original referrer only if it's not already stored and not from z.html
+        if (!sessionStorage.getItem('originalReferrer') && document.referrer && !document.referrer.includes('z.html')) {
+            sessionStorage.setItem('originalReferrer', document.referrer);
         }
-    }
+
+        function goBack() {
+            const originalReferrer = sessionStorage.getItem('originalReferrer');
+            if (originalReferrer) {
+                window.location.href = originalReferrer; // Go back to the stored original referrer
+            } else {
+                window.history.back(); // Fallback if no referrer is stored
+            }
+        }
         // JavaScript function to filter employees in the table
         function filterEmployees() {
             const input = document.getElementById('employeeSearch');
