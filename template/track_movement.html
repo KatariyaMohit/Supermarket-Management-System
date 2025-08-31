@@ -12,6 +12,10 @@
     <div class="track-movement-container">
         <h2>Track Product Movement</h2>
 
+        <a href="{{ url_for('warehouse_manager_dashboard') }}" class="back-link">
+                <img src="{{ url_for('static', filename='back-icon.png') }}" alt="Back">
+            </a>
+
         <form id="transfer-form" action="{{ url_for('submit_transfer') }}" method="POST">
             <label for="block">Block:</label>
             <input type="text" id="block" name="block" placeholder="Enter block name or ID" autocomplete="off">
